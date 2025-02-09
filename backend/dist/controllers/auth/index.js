@@ -129,8 +129,11 @@ const Logout = async (req, res, next) => {
 };
 
 const Me = async (req, res, next) => {
+	if (!req.payload || !req.payload.user_id) {
+		return res.status(401).json({ message: "Payload Error" });
+	  }
 	const { user_id } = req.payload;
-
+	console.log(user_id);
 	try {
 		const user = await _user2.default.findById(user_id).select("-password -__v");
 

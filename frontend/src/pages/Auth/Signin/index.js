@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Alert,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -32,55 +33,59 @@ function Signin({ history }) {
         login(loginResponse);
         history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
+        bag.setErrors({ general: e.response?.data?.message});
       }
     },
   });
+
   return (
-    <div>
-      <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
-          <Box textAlign="center">
-            <Heading>Signin</Heading>
-          </Box>
-          <Box my={5}>
-            {formik.errors.general && (
-              <Alert status="error">{formik.errors.general}</Alert>
-            )}
-          </Box>
-          <Box my={5} textAlign="left">
-            <form onSubmit={formik.handleSubmit}>
-              <FormControl>
-                <FormLabel>E-mail</FormLabel>
-                <Input
-                  name="email"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
-                />
-              </FormControl>
-
-              <FormControl mt="4">
-                <FormLabel>Password</FormLabel>
-                <Input
-                  name="password"
-                  type="password"
-                  onChange={formik.handleChange}
-                  onBlur={formik.handleBlur}
-                  value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
-                />
-              </FormControl>
-
-              <Button mt="4" width="full" type="submit">
-                Sign In
-              </Button>
-            </form>
-          </Box>
+    <Flex align="center" width="full" justifyContent="center">
+      <Box pt={10}>
+        <Box textAlign="center">
+          <Heading>Signin</Heading>
         </Box>
-      </Flex>
-    </div>
+
+        {/* General error message */}
+        {formik.errors.general && (
+          <Box my={5}>
+            <Alert status="error">{formik.errors.general}</Alert>
+          </Box>
+        )}
+
+        <Box my={5} textAlign="left">
+          <form onSubmit={formik.handleSubmit}>
+            {/* Email Field */}
+            <FormControl isInvalid={formik.touched.email && formik.errors.email}>
+              <FormLabel>E-mail</FormLabel>
+              <Input
+                name="email"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.email}
+              />
+              <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
+            </FormControl>
+
+            {/* Password Field */}
+            <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
+              <FormLabel>Password</FormLabel>
+              <Input
+                name="password"
+                type="password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                value={formik.values.password}
+              />
+              <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+            </FormControl>
+
+            <Button mt="4" width="full" type="submit">
+              Sign In
+            </Button>
+          </form>
+        </Box>
+      </Box>
+    </Flex>
   );
 }
 

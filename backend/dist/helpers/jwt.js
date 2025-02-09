@@ -26,13 +26,23 @@ const signAccessToken = (data) => {
 };
 
 const verifyAccessToken = (req, res, next) => {
-	const authorizationToken = req.headers["authorization"];
-	if (!authorizationToken) {
-		next(_boom2.default.unauthorized());
+	console.log("Headers:", req.headers); // Debugging
+	
+	const authorizationHeader = req.headers["authorization"];
+	if (!authorizationHeader) {
+		console.log("Authorization header is missing!");
+		return next(_boom2.default.unauthorized("Authorization header missing"));
 	}
 
-	_jsonwebtoken2.default.verify(authorizationToken, process.env.JWT_SECRET, (err, payload) => {
+	const token = authorizationHeader.startsWith("Bearer ")
+		? authorizationHeader.split(" ")[1]
+		: authorizationHeader;
+
+	console.log("Extracted Token:", token); // Debugging
+
+	_jsonwebtoken2.default.verify(token, process.env.JWT_SECRET, (err, payload) => {
 		if (err) {
+			console.log("JWT Verification Error:", err.message); // Debugging
 			return next(
 				_boom2.default.unauthorized(
 					err.name === "JsonWebTokenError" ? "Unauthorized" : err.message
@@ -40,10 +50,13 @@ const verifyAccessToken = (req, res, next) => {
 			);
 		}
 
+		console.log("Decoded Payload:", payload); // Debugging
 		req.payload = payload;
 		next();
 	});
 };
+
+
 
 const signRefreshToken = (user_id) => {
 	return new Promise((resolve, reject) => {

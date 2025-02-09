@@ -13,14 +13,14 @@ const AuthProvider = ({ children }) => {
     (async () => {
       try {
         const me = await fetchMe();
-
+        console.log(me);
         if (Object.keys(me).length === 0) {
           setLoggedIn(false);
+
         } else {
           setLoggedIn(true);
           setUser(me);
         }
-
         setLoading(false);
       } catch (e) {
         setLoading(false);
@@ -31,15 +31,16 @@ const AuthProvider = ({ children }) => {
   const login = (data) => {
     setLoggedIn(true);
     setUser(data.user);
-
+    console.log(loggedIn);
     localStorage.setItem("access-token", data.accessToken);
     localStorage.setItem("refresh-token", data.refreshToken);
   };
 
   const logout = async () => {
     setLoggedIn(false);
+    console.log("LoggedIn status: ",loggedIn);
     setUser(null);
-
+    console.log(loggedIn);
     await fetchLogout();
 
     localStorage.removeItem("access-token");

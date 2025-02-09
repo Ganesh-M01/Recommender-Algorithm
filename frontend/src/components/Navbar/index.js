@@ -25,10 +25,10 @@ function Navbar() {
         {!loggedIn && (
           <>
             <Link to="/signin">
-              <Button colorScheme="whatsapp">Login</Button>
+              <Button colorScheme="whatsapp" color="black">Login</Button>
             </Link>
             <Link to="/signup">
-              <Button colorScheme="facebook">Register</Button>
+              <Button colorScheme="facebook" color="black">Register</Button>
             </Link>
           </>
         )}
@@ -36,7 +36,7 @@ function Navbar() {
           <>
             {items.length > 0 && (
               <Link to="/basket">
-                <Button colorScheme="pink" variant="outline">
+                <Button colorScheme="pink" variant="outline" color="black">
                   Basket ({items.length})
                 </Button>
               </Link>
