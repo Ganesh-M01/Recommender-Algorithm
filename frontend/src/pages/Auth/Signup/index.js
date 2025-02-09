@@ -8,6 +8,7 @@ import {
   Input,
   Button,
   Alert,
+  FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import validationSchema from "./validations";
@@ -24,19 +25,35 @@ function Signup({ history }) {
       passwordConfirm: "",
     },
     validationSchema,
+    validateOnBlur: true,
+    validateOnChange: true,
     onSubmit: async (values, bag) => {
       try {
+        await validationSchema.validate(values, { abortEarly: false });
+
         const registerResponse = await fetcRegister({
           email: values.email,
           password: values.password,
         });
+
         login(registerResponse);
         history.push("/profile");
       } catch (e) {
-        bag.setErrors({ general: e.response.data.message });
+        if (e.name === "ValidationError") {
+          const errors = {};
+          e.inner.forEach((error) => {
+            errors[error.path] = error.message;
+          });
+          bag.setErrors(errors);
+        } else {
+          const errorMessage =
+            e.response?.data?.message || "An unexpected error occurred.";
+          bag.setErrors({ general: errorMessage });
+        }
       }
     },
   });
+
   return (
     <div>
       <Flex align="center" width="full" justifyContent="center">
@@ -44,25 +61,29 @@ function Signup({ history }) {
           <Box textAlign="center">
             <Heading>Signup</Heading>
           </Box>
-          <Box my={5}>
-            {formik.errors.general && (
-              <Alert status="error">{formik.errors.general}</Alert>
-            )}
-          </Box>
+
+          {formik.errors.general && (
+            <Alert status="error" mt={4}>
+              {formik.errors.general}
+            </Alert>
+          )}
+
           <Box my={5} textAlign="left">
             <form onSubmit={formik.handleSubmit}>
-              <FormControl>
+              {/* Email Field */}
+              <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>E-mail</FormLabel>
                 <Input
                   name="email"
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.email}
-                  isInvalid={formik.touched.email && formik.errors.email}
                 />
+                <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
 
-              <FormControl mt="4">
+              {/* Password Field */}
+              <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
@@ -70,11 +91,15 @@ function Signup({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.password}
-                  isInvalid={formik.touched.password && formik.errors.password}
                 />
+                <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
 
-              <FormControl mt="4">
+              {/* Confirm Password Field */}
+              <FormControl
+                mt="4"
+                isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
+              >
                 <FormLabel>Password Confirm</FormLabel>
                 <Input
                   name="passwordConfirm"
@@ -82,14 +107,11 @@ function Signup({ history }) {
                   onChange={formik.handleChange}
                   onBlur={formik.handleBlur}
                   value={formik.values.passwordConfirm}
-                  isInvalid={
-                    formik.touched.passwordConfirm &&
-                    formik.errors.passwordConfirm
-                  }
                 />
+                <FormErrorMessage>{formik.errors.passwordConfirm}</FormErrorMessage>
               </FormControl>
 
-              <Button mt="4" width="full" type="submit">
+              <Button mt="4" width="full" type="submit" isDisabled={formik.isSubmitting}>
                 Sign Up
               </Button>
             </form>

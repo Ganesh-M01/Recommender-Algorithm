@@ -49,6 +49,7 @@ const Register = async (req, res, next) => {
 	} catch (e) {
 		next(e);
 	}
+	console.log("User registered Success.")
 };
 
 const Login = async (req, res, next) => {

@@ -1,6 +1,6 @@
 import RateLimit from 'express-rate-limit';
 import RedisStore from 'rate-limit-redis';
-import redis from './clients/redis';
+import redis from './clients/redis.js';
 import Boom from 'boom';
 
 const limiter = new RateLimit({
