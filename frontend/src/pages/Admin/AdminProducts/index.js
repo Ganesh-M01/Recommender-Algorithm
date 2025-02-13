@@ -40,23 +40,23 @@ function AdminProducts() {
         render: (text, record) => (
           <>
             <Link to={`/admin/products/${record._id}`}>
-              <Button colorScheme={"facebook"}>Edit</Button>
+              <Button colorScheme="green">Edit</Button>
             </Link>
             <Popconfirm
               title="Are you sure"
               onConfirm={() => {
                 deleteMutation.mutate(record._id, {
                   onSuccess: () => {
-                    alert("ürün silindi");
+                    alert("Product Deleted");
                   },
                 });
               }}
-              onCancel={() => console.log("iptal edildi")}
+              onCancel={() => console.log("Cancelled")}
               okText="Yes"
               cancelText="No"
               placement="left"
             >
-              <Button colorScheme={"facebook"} ml="5">
+              <Button colorScheme={"red"} ml="5">
                 Delete
               </Button>
             </Popconfirm>

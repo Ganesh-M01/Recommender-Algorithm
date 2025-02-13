@@ -40,7 +40,6 @@ const AuthProvider = ({ children }) => {
     setLoggedIn(false);
     console.log("LoggedIn status: ",loggedIn);
     setUser(null);
-    console.log(loggedIn);
     await fetchLogout();
 
     localStorage.removeItem("access-token");

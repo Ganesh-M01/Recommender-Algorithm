@@ -38,7 +38,7 @@ function Cards({ item }) {
             <Heading size="md">{item.title}</Heading>
             <Text>{moment(item.createdAt).format("DD/MM/YYYY")}</Text>
             <Text color="blue.600" fontSize="2xl">
-              {item.price}$
+              Rs. {item.price}
             </Text>
           </Stack>
         </CardBody>
@@ -48,13 +48,10 @@ function Cards({ item }) {
         <ButtonGroup spacing="2">
           <Button
             variant="solid"
-            colorScheme={findBasketItem ? "red" : "whatsapp"}
+            colorScheme={findBasketItem ? "red" : "green"}
             onClick={() => addToBasket(item, findBasketItem)}
           >
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
-          </Button>
-          <Button variant="ghost" colorScheme="blue">
-            Add to cart
           </Button>
         </ButtonGroup>
       </CardFooter>
