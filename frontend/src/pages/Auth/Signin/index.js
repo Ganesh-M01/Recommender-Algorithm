@@ -11,12 +11,14 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import validationSchema from "./validations";
 import { fetchLogin } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 
-function Signin({ history }) {
+function Signin() {
   const { login } = useAuth();
+  const navigate = useNavigate(); // Get navigate function
 
   const formik = useFormik({
     initialValues: {
@@ -31,9 +33,9 @@ function Signin({ history }) {
           password: values.password,
         });
         login(loginResponse);
-        history.push("/profile");
+        navigate("/"); // Redirect to products page
       } catch (e) {
-        bag.setErrors({ general: e.response?.data?.message});
+        bag.setErrors({ general: e.response?.data?.message });
       }
     },
   });

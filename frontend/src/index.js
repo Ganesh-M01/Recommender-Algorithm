@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import "./reset.css";
-import "antd/dist/antd";
+import "antd/dist/antd"; // Ensure this is imported correctly
 import App from "./App";
 import { ChakraProvider } from "@chakra-ui/react";
 import { QueryClient, QueryClientProvider } from "react-query";
@@ -19,6 +19,7 @@ const queryClient = new QueryClient({
     },
   },
 });
+
 root.render(
   <QueryClientProvider client={queryClient}>
     <BrowserRouter>
