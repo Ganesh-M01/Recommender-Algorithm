@@ -1,6 +1,5 @@
 import { Box, Flex, HStack, Link, Text, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 
 function Navbar() {
   return (

@@ -57,7 +57,9 @@ function Cards({ item }) {
             alt='Product'
             borderRadius='lg'
             loading='lazy'
-            boxSize={300}
+            height={235}
+            width={535}
+            // boxSize={300}
             objectFit='cover'
           />
           <Stack mt='6' spacing='3'>
