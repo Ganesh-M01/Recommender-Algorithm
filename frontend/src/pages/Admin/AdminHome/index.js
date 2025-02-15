@@ -1,62 +1,55 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Box, Text, Button } from "@chakra-ui/react";
-import "../style.css";
+import { Box, Text, Button, Flex, useColorModeValue, VStack } from "@chakra-ui/react";
+import "../style.css"; // Importing the separate CSS file
 
 function AdminHome() {
+  const textColor = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue("white", "gray.700");
+  const buttonBg = useColorModeValue("blue.500", "blue.300");
+  const buttonHoverBg = useColorModeValue("blue.600", "blue.400");
+
   return (
-    <div>
-      <nav>
+    <Flex className="admin-container">
+      {/* Sidebar Navigation */}
+      <Box className="admin-sidebar">
         <ul className="admin-menu">
           <li>
-            <Link to="/admin">Home</Link>
+            <Link to="/admin">🏠 Home</Link>
           </li>
           <li>
-            <Link to="/admin/orders">Order</Link>
-          </li>
-          <li>
-            <Link to="/admin/products">Products</Link>
+            <Link to="/admin/products">🛍️ Products</Link>
           </li>
         </ul>
-      </nav>
-      <Box mt={10}>
-        <Text fontSize="2xl" p="5">
-          Welcome Admin
+      </Box>
+
+      {/* Main Content */}
+      <Box className="admin-content" bg={bgColor} boxShadow="md">
+        <Text fontSize="5xl" fontWeight="bold" p="5" color={textColor} textAlign="center">
+          Welcome, Admin!
         </Text>
-        <Box ml={10}>
-          You can see orders
-          <Link to="/admin/orders">
-            <Button ml={4} height={6}>
-              Orders
-            </Button>
-          </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can see products
+
+        <VStack spacing={4} align="center">
           <Link to="/admin/products">
-            <Button ml={4} height={6}>
+            <Button className="admin-button" bg={buttonBg} _hover={{ bg: buttonHoverBg }} width="200px">
               Products
             </Button>
           </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can edit or delete your products
+
           <Link to="/admin/products">
-            <Button ml={4} height={6}>
+            <Button className="admin-button" bg={buttonBg} _hover={{ bg: buttonHoverBg }} width="200px">
               Edit or Delete
             </Button>
           </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can upload new products
+
           <Link to="/admin/products/new">
-            <Button ml={4} height={6}>
+            <Button className="admin-button" bg={buttonBg} _hover={{ bg: buttonHoverBg }} width="200px">
               New Products
             </Button>
           </Link>
-        </Box>
+        </VStack>
       </Box>
-    </div>
+    </Flex>
   );
 }
 

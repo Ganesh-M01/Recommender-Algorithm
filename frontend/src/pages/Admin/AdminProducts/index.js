@@ -1,4 +1,4 @@
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, Flex, useColorModeValue, VStack } from "@chakra-ui/react";
 import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import "../style.css";
@@ -65,6 +65,13 @@ function AdminProducts() {
       },
     ];
   }, [deleteMutation]);
+
+  const textColor = useColorModeValue("black", "white");
+  const bgColor = useColorModeValue("white", "gray.700");
+  const buttonBg = useColorModeValue("blue.500", "blue.300");
+  const buttonHoverBg = useColorModeValue("blue.600", "blue.400");
+  const linkColor = useColorModeValue("black", "white");
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -72,21 +79,21 @@ function AdminProducts() {
     return <div>Error: {error.message}</div>;
   }
   return (
-    <div>
-      <nav>
+    <Flex className="admin-container">
+      {/* Sidebar Navigation */}
+      <Box className="admin-sidebar">
         <ul className="admin-menu">
           <li>
-            <Link to="/admin">Home</Link>
+            <Link to="/admin">🏠 Home</Link>
           </li>
           <li>
-            <Link to="/admin/orders">Order</Link>
-          </li>
-          <li>
-            <Link to="/admin/products">Products</Link>
+            <Link to="/admin/products">🛍️ Products</Link>
           </li>
         </ul>
-      </nav>
-      <Box mt={10}>
+      </Box>
+
+      {/* Main Content */}
+      <Box className="admin-content" bg={bgColor} boxShadow="md">
         <Box
           display="flex"
           justifyContent="space-between"
@@ -94,17 +101,19 @@ function AdminProducts() {
           p={4}
           mr={10}
         >
-          <Text fontSize="2xl" p="5">
+          <Text fontSize="2xl" p="5" color={textColor}>
             Products
           </Text>
-          <Button colorScheme={"facebook"}>
-            <Link to="/admin/products/new">New</Link>
-          </Button>
+          <Link to="/admin/products/new">
+            <Button colorScheme={"facebook"} color={linkColor}>
+              Add a New Product
+            </Button>
+          </Link>
         </Box>
 
         <Table dataSource={data} columns={columns} rowKey="_id" />
       </Box>
-    </div>
+    </Flex>
   );
 }
 

@@ -9,6 +9,8 @@ import {
   Button,
   Alert,
   FormErrorMessage,
+  VStack,
+  useColorModeValue,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useNavigate } from "react-router-dom"; // Import useNavigate hook
@@ -56,23 +58,25 @@ function Signup() {
     },
   });
 
+  const bgColor = useColorModeValue("white", "gray.700");
+  const boxShadow = useColorModeValue("lg", "dark-lg");
+
   return (
-    <div>
-      <Flex align="center" width="full" justifyContent="center">
-        <Box pt={10}>
-          <Box textAlign="center">
-            <Heading>Signup</Heading>
+    <Flex align="center" justifyContent="center" height="100vh" bg={useColorModeValue("gray.50", "gray.800")}>
+      <Box p={8} maxWidth="500px" borderWidth={1} borderRadius={8} boxShadow={boxShadow} bg={bgColor}>
+        <Box textAlign="center">
+          <Heading>Sign Up</Heading>
+        </Box>
+
+        {formik.errors.general && (
+          <Box my={5}>
+            <Alert status="error">{formik.errors.general}</Alert>
           </Box>
+        )}
 
-          {formik.errors.general && (
-            <Alert status="error" mt={4}>
-              {formik.errors.general}
-            </Alert>
-          )}
-
-          <Box my={5} textAlign="left">
-            <form onSubmit={formik.handleSubmit}>
-              {/* Email Field */}
+        <Box my={5} textAlign="left">
+          <form onSubmit={formik.handleSubmit}>
+            <VStack spacing={4}>
               <FormControl isInvalid={formik.touched.email && formik.errors.email}>
                 <FormLabel>E-mail</FormLabel>
                 <Input
@@ -84,8 +88,7 @@ function Signup() {
                 <FormErrorMessage>{formik.errors.email}</FormErrorMessage>
               </FormControl>
 
-              {/* Password Field */}
-              <FormControl mt="4" isInvalid={formik.touched.password && formik.errors.password}>
+              <FormControl isInvalid={formik.touched.password && formik.errors.password}>
                 <FormLabel>Password</FormLabel>
                 <Input
                   name="password"
@@ -97,11 +100,7 @@ function Signup() {
                 <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
               </FormControl>
 
-              {/* Confirm Password Field */}
-              <FormControl
-                mt="4"
-                isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}
-              >
+              <FormControl isInvalid={formik.touched.passwordConfirm && formik.errors.passwordConfirm}>
                 <FormLabel>Password Confirm</FormLabel>
                 <Input
                   name="passwordConfirm"
@@ -113,14 +112,14 @@ function Signup() {
                 <FormErrorMessage>{formik.errors.passwordConfirm}</FormErrorMessage>
               </FormControl>
 
-              <Button mt="4" width="full" type="submit" isDisabled={formik.isSubmitting}>
+              <Button mt={4} width="full" type="submit" colorScheme="blue" isLoading={formik.isSubmitting}>
                 Sign Up
               </Button>
-            </form>
-          </Box>
+            </VStack>
+          </form>
         </Box>
-      </Flex>
-    </div>
+      </Box>
+    </Flex>
   );
 }
 

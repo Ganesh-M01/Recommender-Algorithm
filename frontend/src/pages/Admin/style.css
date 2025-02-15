@@ -1,8 +1,72 @@
-.admin-menu {
-  display: flex;
-  padding: 0;
-  margin: 0;
+.body {
+  margin: 110;
+  font-family: Arial, sans-serif;
 }
+admin-container {
+  display: flex;
+  height: 100vh;
+}
+
+.admin-sidebar {
+  width: 250px;
+  background: #2d3748; /* Dark blue-gray */
+  color: white;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.admin-menu {
+  list-style: none;
+  padding: 0;
+  width: 100%;
+}
+
 .admin-menu li {
-  padding: 0 10px;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.admin-menu li a {
+  display: block;
+  text-decoration: none;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  padding: 12px 20px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.admin-menu li a:hover {
+  background: #4a5568; /* Slightly lighter shade on hover */
+}
+
+.admin-content {
+  flex: 1;
+  padding: 40px;
+  background: #f7fafc;
+}
+
+.admin-section {
+  background: white;
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.admin-button {
+  margin-left: 10px;
+  background: #3182ce;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.admin-button:hover {
+  background: #2b6cb0;
 }

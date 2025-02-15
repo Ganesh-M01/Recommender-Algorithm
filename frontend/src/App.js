@@ -1,5 +1,6 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import { Box } from "@chakra-ui/react"; // Import Box
 import Navbar from "./components/Navbar";
 import Signin from "./pages/Auth/Signin/index";
 import Signup from "./pages/Auth/Signup/index";
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       <Navbar />
+      <Box height="80px" /> {/* Spacer for fixed navbar */}
       <div id="content">
         <Routes>
           <Route path="/" element={<Products />} />
