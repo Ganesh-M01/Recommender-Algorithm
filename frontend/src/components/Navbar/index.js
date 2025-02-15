@@ -1,8 +1,11 @@
 import { Box, Flex, HStack, Link, Text, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
 
 function Navbar() {
+  const { user, logout } = useAuth(); // Get user and logout function
+
   return (
     <Box bg="gray.800" p="4">
       <Flex align="center" justify="space-between" wrap="wrap">
@@ -15,20 +18,35 @@ function Navbar() {
               </Text>
             </Flex>
           </Link>
-          <Link as={RouterLink} to="/admin">
-            Admin
-          </Link>
-          <Link as={RouterLink} to="/profile">
-            Profile
-          </Link>
+          {user && (
+            <>
+              {user.role === "admin" && (
+                <Link as={RouterLink} to="/admin">
+                  Admin
+                </Link>
+              )}
+              <Link as={RouterLink} to="/profile">
+                Profile
+              </Link>
+              <Link as={RouterLink} to="/basket">
+                Basket
+              </Link>
+            </>
+          )}
         </HStack>
         <HStack spacing={4} color="white">
-          <Link as={RouterLink} to="/signin">
-            Sign In
-          </Link>
-          <Link as={RouterLink} to="/signup">
-            Sign Up
-          </Link>
+          {!user ? (
+            <>
+              <Link as={RouterLink} to="/signin">
+                Sign In
+              </Link>
+              <Link as={RouterLink} to="/signup">
+                Sign Up
+              </Link>
+            </>
+          ) : (
+            <Button onClick={logout}>Logout</Button>
+          )}
         </HStack>
       </Flex>
     </Box>

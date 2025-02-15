@@ -11,12 +11,14 @@ import {
   FormErrorMessage,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import { useNavigate } from "react-router-dom"; // Import useNavigate hook
 import validationSchema from "./validations";
 import { fetcRegister } from "../../../api";
 import { useAuth } from "../../../contexts/AuthContext";
 
-function Signup({ history }) {
+function Signup() {
   const { login } = useAuth();
+  const navigate = useNavigate(); // Get navigate function
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +39,7 @@ function Signup({ history }) {
         });
 
         login(registerResponse);
-        history.push("/profile");
+        navigate("/"); // Redirect to products page
       } catch (e) {
         if (e.name === "ValidationError") {
           const errors = {};
