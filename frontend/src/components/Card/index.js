@@ -22,22 +22,48 @@ function Cards({ item }) {
     (basket_item) => basket_item._id === item._id
   );
 
+  const trackEvent = async (eventType, productId) => {
+    const userId = localStorage.getItem("userId"); // Get user ID from auth state
+
+    await fetch("http://localhost:4000/event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, productId, eventType }),
+    });
+  };
+
+  const removeEvent = async (productId) => {
+    const userId = localStorage.getItem("userId");
+
+    await fetch("http://localhost:4000/event", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, productId }),
+    });
+  };
+
   return (
-    <Card maxW="sm">
-      <Link to={`/product/${item._id}`}>
+    <Card maxW='sm'>
+      <Link
+        to={`/product/${item._id}`}
+        onClick={() => trackEvent("view", item._id)}>
         <CardBody>
           <Image
             src={item.photos[0]}
-            alt="Product"
-            borderRadius="lg"
-            loading="lazy"
+            alt='Product'
+            borderRadius='lg'
+            loading='lazy'
             boxSize={300}
-            objectFit="cover"
+            objectFit='cover'
           />
-          <Stack mt="6" spacing="3">
-            <Heading size="md">{item.title}</Heading>
+          <Stack mt='6' spacing='3'>
+            <Heading size='md'>{item.title}</Heading>
             <Text>{moment(item.createdAt).format("DD/MM/YYYY")}</Text>
-            <Text color="blue.600" fontSize="2xl">
+            <Text color='blue.600' fontSize='2xl'>
               Rs. {item.price}
             </Text>
           </Stack>
@@ -45,12 +71,18 @@ function Cards({ item }) {
         <Divider />
       </Link>
       <CardFooter>
-        <ButtonGroup spacing="2">
+        <ButtonGroup spacing='2'>
           <Button
-            variant="solid"
+            variant='solid'
             colorScheme={findBasketItem ? "red" : "green"}
-            onClick={() => addToBasket(item, findBasketItem)}
-          >
+            onClick={() => {
+              if (findBasketItem) {
+                removeEvent(item._id);
+              } else {
+                trackEvent("add_to_cart", item._id);
+              }
+              addToBasket(item, findBasketItem);
+            }}>
             {findBasketItem ? "Remove from Basket" : "Add to Basket"}
           </Button>
         </ButtonGroup>

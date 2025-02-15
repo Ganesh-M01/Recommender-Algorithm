@@ -1,25 +1,38 @@
-"use strict";Object.defineProperty(exports, "__esModule", {value: true}); function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }var _express = require('express');
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
+var _express = require("express");
 
 // helpers
-var _jwt = require('../helpers/jwt');
+var _jwt = require("../helpers/jwt");
 
 // routes
-var _auth = require('./auth'); var _auth2 = _interopRequireDefault(_auth);
-var _product = require('./product'); var _product2 = _interopRequireDefault(_product);
-var _order = require('./order'); var _order2 = _interopRequireDefault(_order);
+var _auth = require("./auth");
+var _auth2 = _interopRequireDefault(_auth);
+var _product = require("./product");
+var _product2 = _interopRequireDefault(_product);
+var _order = require("./order");
+var _order2 = _interopRequireDefault(_order);
+const eventRoutes = require("./event");
 
-const router = _express.Router.call(void 0, );
+const router = _express.Router.call(void 0);
 
-router.get('/', (req, res) => {
-  res.end('hey');
+router.get("/", (req, res) => {
+  res.end("hey");
 });
 
 router.get("/test", (req, res) => {
   res.json({ message: "Routes are working!" });
 });
 
-router.use('/auth', _auth2.default);
-router.use('/product', _product2.default);
-router.use('/order', _jwt.verifyAccessToken, _order2.default);
-
+router.use("/auth", _auth2.default);
+router.use("/product", _product2.default);
+router.use("/order", _jwt.verifyAccessToken, _order2.default);
+router.use("/event", eventRoutes);
 exports.default = router;
+
+
+
+
