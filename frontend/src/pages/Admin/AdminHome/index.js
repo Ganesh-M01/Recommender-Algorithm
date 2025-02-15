@@ -1,62 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Box, Text, Button } from "@chakra-ui/react";
+import { Box, Text, Button, VStack, HStack, Heading } from "@chakra-ui/react";
+import { fetchProducts } from "../../../api"; // Import fetchProducts
 import "../style.css";
 
 function AdminHome() {
+  const [productCount, setProductCount] = useState(0);
+
+  useEffect(() => {
+    const getProductCount = async () => {
+      const products = await fetchProducts();
+      setProductCount(products.length);
+    };
+
+    getProductCount();
+  }, []);
+
   return (
-    <div>
-      <nav>
-        <ul className="admin-menu">
-          <li>
-            <Link to="/admin">Home</Link>
-          </li>
-          <li>
-            <Link to="/admin/orders">Order</Link>
-          </li>
-          <li>
-            <Link to="/admin/products">Products</Link>
-          </li>
-        </ul>
-      </nav>
-      <Box mt={10}>
-        <Text fontSize="2xl" p="5">
-          Welcome Admin
-        </Text>
-        <Box ml={10}>
-          You can see orders
+    <Box p={5}>
+      <Heading as="h1" size="xl" mb={5} textAlign="center">
+        Admin Dashboard
+      </Heading>
+      <VStack spacing={8} align="stretch">
+        <HStack justify="space-between">
+          <Text fontSize="lg">Manage Orders</Text>
           <Link to="/admin/orders">
-            <Button ml={4} height={6}>
-              Orders
-            </Button>
+            <Button colorScheme="teal">Orders</Button>
           </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can see products
+        </HStack>
+        <HStack justify="space-between">
+          <Text fontSize="lg">
+            Manage Products ({productCount})
+          </Text>
           <Link to="/admin/products">
-            <Button ml={4} height={6}>
-              Products
-            </Button>
+            <Button colorScheme="teal">Products</Button>
           </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can edit or delete your products
-          <Link to="/admin/products">
-            <Button ml={4} height={6}>
-              Edit or Delete
-            </Button>
-          </Link>
-        </Box>
-        <Box ml={10} mt={4}>
-          You can upload new products
+        </HStack>
+        <HStack justify="space-between">
+          <Text fontSize="lg">Upload New Products</Text>
           <Link to="/admin/products/new">
-            <Button ml={4} height={6}>
-              New Products
-            </Button>
+            <Button colorScheme="teal">New Products</Button>
           </Link>
-        </Box>
-      </Box>
-    </div>
+        </HStack>
+      </VStack>
+    </Box>
   );
 }
 

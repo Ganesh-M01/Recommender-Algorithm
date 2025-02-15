@@ -3,14 +3,14 @@ import React, { useMemo } from "react";
 import { Link } from "react-router-dom";
 import "../style.css";
 import { useQuery, useMutation, useQueryClient } from "react-query";
-import { fetchProductList, deleteProduct } from "../../../api";
+import { fetchProductList, deleteProduct } from "../../../api"; // Import fetchProductList
 import { Table, Popconfirm } from "antd";
 
 function AdminProducts() {
   const queryClient = useQueryClient();
   const { isLoading, isError, data, error } = useQuery(
     "admin:products",
-    fetchProductList
+    fetchProductList // Use fetchProductList
   );
 
   const deleteMutation = useMutation(deleteProduct, {
@@ -65,6 +65,7 @@ function AdminProducts() {
       },
     ];
   }, [deleteMutation]);
+
   if (isLoading) {
     return <div>Loading...</div>;
   }

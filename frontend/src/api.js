@@ -108,3 +108,10 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const fetchProducts = async () => {
+  const { data } = await axios.get(
+    `${process.env.REACT_APP_BASE_ENDPOINT}/product`
+  );
+  return data;
+};

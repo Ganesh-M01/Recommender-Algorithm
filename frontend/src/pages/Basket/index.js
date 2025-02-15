@@ -56,47 +56,49 @@ function Basket() {
   };
 
   return (
-    <Box p='5'>
+    <Box p="5">
       {items.length < 1 && (
-        <Alert status='warning'>
+        <Alert status="warning">
           <AlertIcon />
           You have not any items in your basket.
         </Alert>
       )}
       {items.length > 0 && (
         <>
-          <ul style={({ listStyleType: "decimal" }, { display: "flex" })}>
+          <ul style={{ listStyleType: "decimal" }}>
             {items.map((item) => (
-              <li key={item._id} style={({ margin: 20 }, { width: "25%" }, {height: "40%"})}>
+              <li key={item._id} style={{ margin: 20 }}>
                 <Link to={`/product/${item._id}`}>
-                  <Text fontSize='22'>
+                  <Text fontSize="22">
                     {item.title} - Rs. {item.price}
                   </Text>
                   <Image
-                    htmlWidth={300}
-                    loading='lazy'
+                    htmlWidth={200}
+                    loading="lazy"
                     src={item.photos[0]}
-                    alt='basket item'
-                    objectFit='cover'
-                    borderRadius='20px'
+                    alt="basket item"
+                    objectFit="cover"
+                    borderRadius="20px"
                   />
                 </Link>
-                <Button
-                  mt='2'
-                  size='sm'
-                  colorScheme='red'
-                  onClick={() => removeFromBasket(item._id)}>
-                  Remove from Basket
-                </Button>
+                <Box display="flex" justifyContent="flex-end" mt="2">
+                  <Button
+                    size="sm"
+                    colorScheme="red"
+                    onClick={() => removeFromBasket(item._id)}
+                  >
+                    Remove from Basket
+                  </Button>
+                </Box>
               </li>
             ))}
           </ul>
-          <Box mt='10'>
-            <Text fontSize='22'>Total: Rs. {total}</Text>
+          <Box mt="10" textAlign="center">
+            <Text fontSize="22">Total: Rs. {total}</Text>
+            <Button onClick={onOpen} colorScheme="green" mt={4}>
+              Buy now
+            </Button>
           </Box>
-          <Button onClick={onOpen} colorScheme='green' mt={4}>
-            Buy now
-          </Button>
 
           <Modal initialFocusRef={initialRef} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -108,7 +110,7 @@ function Basket() {
                   <FormLabel>Address</FormLabel>
                   <Textarea
                     ref={initialRef}
-                    placeholder='Adress'
+                    placeholder="Adress"
                     value={address}
                     onChange={(e) => setAddress(e.target.value)}
                   />
@@ -117,11 +119,12 @@ function Basket() {
 
               <ModalFooter>
                 <Button
-                  colorScheme='blue'
+                  colorScheme="blue"
                   mr={3}
                   onClick={() => {
                     handleSubmitForm();
-                  }}>
+                  }}
+                >
                   Order
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>
