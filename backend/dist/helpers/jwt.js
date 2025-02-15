@@ -6,7 +6,7 @@ var _redis = require('../clients/redis'); var _redis2 = _interopRequireDefault(_
 const signAccessToken = (data) => {
 	return new Promise((resolve, reject) => {
 		const payload = {
-			...data,
+			user_id: data._id,
 		};
 
 		const options = {

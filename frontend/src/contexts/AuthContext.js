@@ -13,37 +13,45 @@ const AuthProvider = ({ children }) => {
     (async () => {
       try {
         const me = await fetchMe();
-        console.log(me);
-        if (Object.keys(me).length === 0) {
-          setLoggedIn(true);
+        console.log("Fetched user:", me);
 
-        } else {
-          setLoggedIn(false);
+        if (me && Object.keys(me).length > 0) {
           setUser(me);
+          setLoggedIn(true);
+        } else {
+          setUser(null);
+          setLoggedIn(false);
         }
-        setLoading(false);
       } catch (e) {
+        console.error("Error fetching user:", e);
+        setUser(null);
+        setLoggedIn(false);
+      } finally {
         setLoading(false);
       }
     })();
   }, []);
 
   const login = (data) => {
-    setLoggedIn(true);
     setUser(data.user);
-    console.log(loggedIn);
+    setLoggedIn(true);
+
+    console.log("User logged in:", data);
+    console.log(data.user._id);
+    localStorage.setItem("userId",data.user._id);
     localStorage.setItem("access-token", data.accessToken);
     localStorage.setItem("refresh-token", data.refreshToken);
   };
 
   const logout = async () => {
-    setLoggedIn(false);
-    console.log("LoggedIn status: ",loggedIn);
-    setUser(null);
     await fetchLogout();
-
     localStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
+
+    setUser(null);
+    setLoggedIn(false);
+
+    console.log("User logged out");
   };
 
   const values = {

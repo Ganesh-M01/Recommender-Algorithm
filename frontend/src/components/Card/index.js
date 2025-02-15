@@ -24,7 +24,7 @@ function Cards({ item }) {
 
   const trackEvent = async (eventType, productId) => {
     const userId = localStorage.getItem("userId"); // Get user ID from auth state
-
+    console.log("Got the user ID as :",userId);
     await fetch("http://localhost:4000/event", {
       method: "POST",
       headers: {

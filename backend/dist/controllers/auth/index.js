@@ -97,7 +97,8 @@ const RefreshToken = async (req, res, next) => {
 			throw _boom2.default.badRequest();
 		}
 
-		const user_id = await _jwt.verifyRefreshToken.call(void 0, refresh_token);
+		const user_id = await _jwt.RefreshToken.call(void 0, refresh_token);
+		console.log(user_id);
 		const accessToken = await _jwt.signAccessToken.call(void 0, user_id);
 		const refreshToken = await _jwt.signRefreshToken.call(void 0, user_id);
 
@@ -129,19 +130,31 @@ const Logout = async (req, res, next) => {
 };
 
 const Me = async (req, res, next) => {
-	if (!req.payload || !req.payload.user_id) {
-		return res.status(401).json({ message: "Payload Error" });
-	  }
-	const { user_id } = req.payload;
-	console.log(user_id);
-	try {
-		const user = await _user2.default.findById(user_id).select("-password -__v");
+	console.log("Decoded Payload:", req.payload); // Debugging line
 
+	if (!req.payload || !req.payload.user_id) {
+		console.log("Payload Error: user_id is missing or undefined");
+		return res.status(401).json({ message: "Payload Error: user_id missing" });
+	}
+
+	const { user_id } = req.payload;
+	console.log("Extracted user_id:", user_id); // Debugging
+
+	try {
+		const user = await _user2.findById(user_id).select("-password -__v");
+		if (!user) {
+			console.log("User not found in database!");
+			return res.status(404).json({ message: "User not found" });
+		}
+		console.log("Fetched User:", user);
 		res.json(user);
 	} catch (e) {
 		next(e);
 	}
 };
+
+  
+  
 
 exports. default = {
 	Register,
