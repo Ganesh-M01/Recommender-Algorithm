@@ -1,6 +1,6 @@
 import { Box, Flex, HStack, Link, Text, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import { Link as RouterLink } from "react-router-dom";
-import { ChevronDownIcon } from "@chakra-ui/icons";
+import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
 
 function Navbar() {
   const { user, logout } = useAuth(); // Get user and logout function

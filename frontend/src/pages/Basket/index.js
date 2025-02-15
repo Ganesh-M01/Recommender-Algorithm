@@ -67,17 +67,16 @@ function Basket() {
         <>
           <ul style={({ listStyleType: "decimal" }, { display: "flex" })}>
             {items.map((item) => (
-              <li key={item._id} style={({ margin: 20 }, { width: "25%" })}>
+              <li key={item._id} style={({ margin: 20 }, { width: "25%" }, {height: "40%"})}>
                 <Link to={`/product/${item._id}`}>
                   <Text fontSize='22'>
-                    {item.title} - Rs. {item.price} 
+                    {item.title} - Rs. {item.price}
                   </Text>
                   <Image
                     htmlWidth={300}
                     loading='lazy'
                     src={item.photos[0]}
                     alt='basket item'
-                    boxSize={250}
                     objectFit='cover'
                     borderRadius='20px'
                   />
@@ -117,9 +116,12 @@ function Basket() {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme='blue' mr={3} onClick={()=>{
-                  handleSubmitForm();
-                }}>
+                <Button
+                  colorScheme='blue'
+                  mr={3}
+                  onClick={() => {
+                    handleSubmitForm();
+                  }}>
                   Order
                 </Button>
                 <Button onClick={onClose}>Cancel</Button>

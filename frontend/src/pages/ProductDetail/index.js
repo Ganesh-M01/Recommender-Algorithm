@@ -22,6 +22,30 @@ function ProductDetail() {
     fetchProduct(product_id)
   );
 
+  const trackEvent = async (eventType, productId) => {
+    const userId = localStorage.getItem("userId"); // Get user ID from auth state
+
+    await fetch("http://localhost:4000/event", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, productId, eventType }),
+    });
+  };
+
+  const removeEvent = async (productId) => {
+    const userId = localStorage.getItem("userId");
+
+    await fetch("http://localhost:4000/event", {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userId, productId }),
+    });
+  };
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
@@ -37,29 +61,34 @@ function ProductDetail() {
     <div>
       <Card
         direction={{ base: "column", sm: "row" }}
-        overflow="hidden"
-        variant="outline"
-      >
+        overflow='hidden'
+        variant='outline'>
         <ImageGallery items={images} showThumbnails={false} />
 
         <Stack>
           <CardBody>
-            <Heading size="md">{data.title}</Heading>
+            <Heading size='md'>{data.title}</Heading>
 
-            <Text maxWidth={400} py="2">
+            <Text maxWidth={400} py='2'>
               {data.description}
             </Text>
-            <Text color="blue.600" fontSize="2xl">
+            <Text color='blue.600' fontSize='2xl'>
               Rs. {data.price}
             </Text>
           </CardBody>
 
           <CardFooter>
             <Button
-              variant="solid"
+              variant='solid'
               colorScheme={findBasketItem ? "red" : "green"}
-              onClick={() => addToBasket(data, findBasketItem)}
-            >
+              onClick={() => {
+                if (findBasketItem) {
+                  removeEvent(product_id);
+                } else {
+                  trackEvent("add_to_cart", product_id);
+                }
+                addToBasket(data, findBasketItem);
+              }}>
               {findBasketItem ? "Remove from basket" : "Add to Basket"}
             </Button>
           </CardFooter>
