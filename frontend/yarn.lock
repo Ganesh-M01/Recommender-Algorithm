@@ -9095,7 +9095,7 @@ react-remove-scroll@^2.5.7:
     use-callback-ref "^1.3.3"
     use-sidecar "^1.1.3"
 
-react-router-dom@^6.8.2:
+react-router-dom@^6.29.0:
   version "6.29.0"
   resolved "https://registry.npmjs.org/react-router-dom/-/react-router-dom-6.29.0.tgz"
   integrity sha512-pkEbJPATRJ2iotK+wUwHfy0xs2T59YPEN8BQxVCPeBZvK7kfPESRc/nyxzdcxR17hXgUPYx2whMwl+eo9cUdnQ==

@@ -1,8 +1,10 @@
 const Event = require("../models/event");
+const mongoose = require("mongoose");
 
 // Assign weights to different actions
 const EVENT_WEIGHTS = {
   view: 1,
+  search: 2,
   add_to_cart: 3,
   purchase: 5,
 };
@@ -10,6 +12,15 @@ const EVENT_WEIGHTS = {
 // Track user events
 const trackEvent = async (req, res) => {
   try {
+    console.log("Query Params:", req.query);
+    console.log("Request Body:", req.body);
+    console.log("Route Params:", req.params);
+    console.log("Headers:", req.headers);
+
+    const { product_id } = req.query;  // Or req.body, depending on how frontend sends data
+    console.log("Extracted product_id:", product_id);
+    
+    console.log("Received event data:", req.body || req.query);
     const { userId, productId, eventType } = req.body;
 
     if (!userId || !productId || !eventType) {
@@ -20,15 +31,14 @@ const trackEvent = async (req, res) => {
       return res.status(400).json({ error: "Invalid event type" });
     }
 
-    const existingEvent = await Event.findOne({ userId, productId, eventType });
-
-    if (existingEvent) {
-      return res.status(200).json({ message: "Event already exists, not adding again." });
+    // Ensure productId is a valid ObjectId
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+      return res.status(400).json({ error: "Invalid product ID" });
     }
 
     const event = new Event({
       userId,
-      productId,
+      productId: new mongoose.Types.ObjectId(productId), // Convert to ObjectId
       eventType,
       weight: EVENT_WEIGHTS[eventType],
     });
@@ -36,6 +46,7 @@ const trackEvent = async (req, res) => {
     await event.save();
     res.status(201).json({ message: "Event tracked successfully", event });
   } catch (error) {
+    console.error("Error tracking event:", error);
     res.status(500).json({ error: "Error tracking event" });
   }
 };
