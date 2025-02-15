@@ -1,0 +1,64 @@
+/* Profile Container */
+.profile-container {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(255, 255, 255, 0.2)), 
+                url("../../../public/assets/profilebg.jpg") no-repeat center center fixed;
+    background-size: cover;
+    height: 86vh;
+    display: flex;
+    align-items: flex-start;  /* Move to top */
+    justify-content: flex-start; /* Move to left */
+    padding: 50px 100px;
+}
+
+/* Profile Card */
+.profile-card {
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(12px); /* Glass effect */
+    padding: 40px;
+    border-radius: 15px;
+    width: 450px; /* Increased width */
+    height: auto;
+    box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.3);
+    text-align: center;
+}
+
+/* Rounded Profile Picture */
+.profile-pic {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid white;
+    display: block;
+    margin: 0 auto 20px;
+}
+
+/* Enlarged Profile Title */
+.profile-text {
+    font-size: 28px;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 10px;
+}
+
+/* Enlarged and Centered Email & Role */
+.profile-info {
+    text-align: center;
+    font-size: 22px; /* Increased font size */
+    font-weight: 500;
+    color: white;
+    margin-top: 10px;
+}
+
+/* Mirroring Effect */
+.profile-container::before {
+    content: "";
+    position: absolute;
+    top: 10%;
+    right: -50px;
+    width: 80%;
+    height: 90%;
+    background: linear-gradient(to right, rgba(255, 255, 255, 0.1), transparent);
+    transform: scaleX(-1);
+    opacity: 0.4;
+}
