@@ -1,62 +1,37 @@
-import React from "react";
-import styles from "./style.module.css";
-import { Link } from "react-router-dom";
-import { Button } from "@chakra-ui/react";
-import { useAuth } from "../../contexts/AuthContext";
-import { useBasket } from "../../contexts/BasketContext";
+import { Box, Flex, HStack, Link, Text, Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { Link as RouterLink } from "react-router-dom";
+import { ChevronDownIcon } from "@chakra-ui/icons";
 
 function Navbar() {
-  const { loggedIn, user } = useAuth();
-  const { items } = useBasket();
-
   return (
-    <nav className={styles.nav}>
-      <div className={styles.left}>
-        <div className={styles.logo}>
-          <Link to="/">eCommerce</Link>
-        </div>
-        <ul className={styles.menu}>
-          <li>
-            <Link to="/">Products</Link>
-          </li>
-        </ul>
-      </div>
-      <div className={styles.right}>
-        {!loggedIn && (
-          <>
-            <Link to="/signin">
-              <Button colorScheme="whatsapp" color="black">Login</Button>
-            </Link>
-            <Link to="/signup">
-              <Button colorScheme="facebook" color="black">Register</Button>
-            </Link>
-          </>
-        )}
-        {loggedIn && (
-          <>
-            {items.length > 0 && (
-              <Link to="/basket">
-                <Button colorScheme="pink" variant="outline" color="black">
-                  Basket ({items.length})
-                </Button>
-              </Link>
-            )}
-
-            {user?.role === "admin" && (
-              <Link to="/admin">
-                <Button colorScheme="pink" variant="ghost">
-                  Admin
-                </Button>
-              </Link>
-            )}
-
-            <Link to="/profile">
-              <Button>Profile</Button>
-            </Link>
-          </>
-        )}
-      </div>
-    </nav>
+    <Box bg="gray.800" p="4">
+      <Flex align="center" justify="space-between" wrap="wrap">
+        <HStack spacing={8} color="white">
+          <Link as={RouterLink} to="/">
+            <Flex align="center">
+              <img src="/assets/Logo2.webp" alt="Logo" style={{ height: '60px', marginRight: '10px' }} />
+              <Text fontSize="lg" fontWeight="bold">
+                Website_Name
+              </Text>
+            </Flex>
+          </Link>
+          <Link as={RouterLink} to="/admin">
+            Admin
+          </Link>
+          <Link as={RouterLink} to="/profile">
+            Profile
+          </Link>
+        </HStack>
+        <HStack spacing={4} color="white">
+          <Link as={RouterLink} to="/signin">
+            Sign In
+          </Link>
+          <Link as={RouterLink} to="/signup">
+            Sign Up
+          </Link>
+        </HStack>
+      </Flex>
+    </Box>
   );
 }
 
