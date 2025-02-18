@@ -17,12 +17,15 @@ import {
   Collapse,
   IconButton,
   useDisclosure,
-  VStack
+  VStack,
+  Image // Import Image component
 } from "@chakra-ui/react";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 import { HamburgerIcon, CloseIcon, SunIcon, MoonIcon } from "@chakra-ui/icons";
 import SearchBar from "./searchbar";
+import bag from '../../assets/bag.png';
+
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -129,7 +132,19 @@ function Navbar() {
             {user && user.role === "admin" && (
               <NavLink to="/admin">Admin</NavLink>
             )}
-            <NavLink to="/basket">Basket</NavLink>
+            {user && (
+              <NavLink to="/basket">
+                <Flex align="center">
+                  <Image
+                    src={bag}
+                    alt="Basket"
+                    boxSize="20px"
+                    mr={2}
+                  />
+                  Basket
+                </Flex>
+              </NavLink>
+            )}
             <Button onClick={toggleColorMode} bg={buttonBg} _hover={{ bg: buttonHoverBg }}>
               {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
             </Button>
@@ -196,7 +211,19 @@ function Navbar() {
               {user && user.role === "admin" && (
                 <NavLink to="/admin">Admin</NavLink>
               )}
-              <NavLink to="/basket">Basket</NavLink>
+              {user && (
+                <NavLink to="/basket">
+                  <Flex align="center">
+                    <Image
+                      src="/assets/basket-icon.png" // Path to the basket icon
+                      alt="Basket"
+                      boxSize="20px"
+                      mr={2}
+                    />
+                    Basket
+                  </Flex>
+                </NavLink>
+              )}
             </VStack>
           </Box>
         </Collapse>

@@ -1,5 +1,5 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useQuery } from "react-query";
 import { fetchProduct } from "../../api";
 import ImageGallery from "react-image-gallery";
@@ -13,10 +13,13 @@ import {
   CardFooter,
 } from "@chakra-ui/react";
 import { useBasket } from "../../contexts/BasketContext";
+import { useAuth } from "../../contexts/AuthContext"; // Import useAuth
 
 function ProductDetail() {
   const { product_id } = useParams();
+  const navigate = useNavigate();
   const { addToBasket, items } = useBasket();
+  const { user } = useAuth(); // Get user from useAuth
 
   const { isLoading, isError, data } = useQuery(["product", product_id], () =>
     fetchProduct(product_id)
@@ -57,6 +60,19 @@ function ProductDetail() {
   const findBasketItem = items.find((item) => item._id === product_id);
   const images = data.photos.map((url) => ({ original: url }));
 
+  const handleAddToBasket = () => {
+    if (!user) {
+      navigate("/signin"); // Redirect to signin if user is not logged in
+      return;
+    }
+    if (findBasketItem) {
+      removeEvent(product_id);
+    } else {
+      trackEvent("add_to_cart", product_id);
+    }
+    addToBasket(data, findBasketItem);
+  };
+
   return (
     <div>
       <Card
@@ -78,19 +94,14 @@ function ProductDetail() {
           </CardBody>
 
           <CardFooter>
-            <Button
-              variant='solid'
-              colorScheme={findBasketItem ? "red" : "green"}
-              onClick={() => {
-                if (findBasketItem) {
-                  removeEvent(product_id);
-                } else {
-                  trackEvent("add_to_cart", product_id);
-                }
-                addToBasket(data, findBasketItem);
-              }}>
-              {findBasketItem ? "Remove from basket" : "Add to Basket"}
-            </Button>
+            {user && (
+              <Button
+                variant='solid'
+                colorScheme={findBasketItem ? "red" : "green"}
+                onClick={handleAddToBasket}>
+                {findBasketItem ? "Remove from basket" : "Add to Basket"}
+              </Button>
+            )}
           </CardFooter>
         </Stack>
       </Card>
