@@ -108,3 +108,22 @@ export const updateProduct = async (input, product_id) => {
 
   return data;
 };
+
+export const fetchRecommendations = async (userId) => {
+  try {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BASE_ENDPOINT}/recommend`,
+      { userId }
+    );
+    return response.data; 
+  } catch (error) {
+    console.error("Error fetching recommendations:", error);
+    return [];
+  }
+};
+
+export const fetchProductById = async (productId) => {
+  const { data } = await axios.get(`${process.env.REACT_APP_BASE_ENDPOINT}/product/${productId}`);
+  return data;
+};
+
