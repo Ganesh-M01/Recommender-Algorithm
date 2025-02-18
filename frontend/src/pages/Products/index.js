@@ -15,8 +15,9 @@ function Products() {
   // Fetch recommended products from localStorage
   useEffect(() => {
     const fetchRecommendations = async () => {
-      const storedRecommendations = JSON.parse(localStorage.getItem("recommendations")) || [];
-      
+      var storedRecommendations = JSON.parse(localStorage.getItem("recommendations")) || [];
+      storedRecommendations = storedRecommendations.collaborative || [];
+      console.log(storedRecommendations);
       if (storedRecommendations.length > 0) {
         // Fetch product details based on stored IDs
         const productDetails = await Promise.all(
@@ -28,7 +29,11 @@ function Products() {
 
     fetchRecommendations();
   }, []);
+  const collaborativeRecommendations = JSON.parse(localStorage.getItem("recommendations"));
 
+  // Now, you can access the 'collaborative' array
+  console.log(collaborativeRecommendations.collaborative);
+  
   // Fetch normal product list
   const {
     data,
