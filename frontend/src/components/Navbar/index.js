@@ -115,7 +115,7 @@ function Navbar() {
                   color={textColor}
                   letterSpacing="tight"
                 >
-                  Website_Name
+                  Aethine
                 </Text>
               </Flex>
             </Link>
