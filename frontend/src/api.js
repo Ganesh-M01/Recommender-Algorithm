@@ -110,10 +110,11 @@ export const updateProduct = async (input, product_id) => {
 };
 
 export const fetchRecommendations = async (userId) => {
+  console.log(userId);
   try {
     const response = await axios.post(
-      `${process.env.REACT_APP_BASE_ENDPOINT}/recommend`,
-      { userId }
+      `http://127.0.0.1:5000/recommend`,
+      {user_id : userId }
     );
     return response.data; 
   } catch (error) {
