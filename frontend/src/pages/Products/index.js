@@ -1,15 +1,35 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Cards from "../../components/Card";
-import { Grid, Box, Flex, Button, Container, useColorMode } from "@chakra-ui/react";
+import { Grid, Box, Flex, Button, Container, useColorMode, Heading } from "@chakra-ui/react";
 import { useInfiniteQuery } from "react-query";
-import { fetchProductList } from "../../api.js";
+import { fetchProductList, fetchProductById } from "../../api.js"; // Fetch function for product details
 import LIGHT_BG from "../../assets/BG-IMG-LIGHT.png"; // Light mode background
 import DARK_BG from "../../assets/BG-IMG-DARK.png";   // Dark mode background
 
 function Products() {
-  const { colorMode } = useColorMode(); // Detects current theme
-  const bgImage = colorMode === "dark" ? DARK_BG : LIGHT_BG; // Switch background
+  const { colorMode } = useColorMode();
+  const bgImage = colorMode === "dark" ? DARK_BG : LIGHT_BG;
+  
+  const [recommendedProducts, setRecommendedProducts] = useState([]);
 
+  // Fetch recommended products from localStorage
+  useEffect(() => {
+    const fetchRecommendations = async () => {
+      const storedRecommendations = JSON.parse(localStorage.getItem("recommendations")) || [];
+      
+      if (storedRecommendations.length > 0) {
+        // Fetch product details based on stored IDs
+        const productDetails = await Promise.all(
+          storedRecommendations.map((productId) => fetchProductById(productId))
+        );
+        setRecommendedProducts(productDetails);
+      }
+    };
+
+    fetchRecommendations();
+  }, []);
+
+  // Fetch normal product list
   const {
     data,
     error,
@@ -35,9 +55,29 @@ function Products() {
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
-      backgroundAttachment="fixed" // Keeps background fixed on scroll
+      backgroundAttachment="fixed"
     >
       <Container maxW="container.xl">
+        {/* Specially Picked for You Section */}
+        {recommendedProducts.length > 0 && (
+          <>
+            <Heading as="h2" size="lg" mb="4">
+              Specially Picked for You
+            </Heading>
+            <Grid templateColumns="repeat(3, 1fr)" gap={4} mb="10">
+              {recommendedProducts.map((item) => (
+                <Box w="100%" key={item._id}>
+                  <Cards item={item} />
+                </Box>
+              ))}
+            </Grid>
+          </>
+        )}
+
+        {/* Regular Product List */}
+        <Heading as="h2" size="lg" mb="4">
+          All Products
+        </Heading>
         <Grid templateColumns="repeat(3, 1fr)" gap={4}>
           {data.pages.map((group, i) => (
             <React.Fragment key={i}>

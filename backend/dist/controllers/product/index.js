@@ -159,6 +159,22 @@ const searchProducts = async (query) => {
   );
 };
 
+const GetByID = async (req, res) => {
+  try {
+    const { productIds } = req.body;
+
+    if (!Array.isArray(productIds) || productIds.length === 0) {
+      return res.status(400).json({ error: "Invalid product IDs" });
+    }
+
+    const products = await _product2.default.find({ _id: { $in: productIds } });
+    res.json(products);
+  } catch (error) {
+    console.error("Error fetching product details:", error);
+    res.status(500).json({ error: "Server error" });
+  }
+}
+
 const Search = async (req, res) => {
   try {
     const query = req.query.q;
@@ -198,4 +214,5 @@ exports.default = {
   GetList,
   searchProducts,
   Search,
+  GetByID,
 };

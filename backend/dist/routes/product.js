@@ -33,5 +33,6 @@ router.get("/", _product2.default.GetList);
 router.put("/:product_id", _product2.default.Update);
 router.delete("/:product_id", _product2.default.Delete);
 router.get("/search", _product2.default.Search);
+router.post("/products", _product2.default.GetByID);
 
 exports.default = router;

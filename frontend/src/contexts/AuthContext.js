@@ -1,5 +1,5 @@
 import { useState, createContext, useContext, useEffect } from "react";
-import { fetchLogout, fetchMe } from "../api";
+import { fetchLogout, fetchMe, fetchRecommendations } from "../api";
 import { Flex, Spinner } from "@chakra-ui/react";
 
 const AuthContext = createContext();
@@ -32,13 +32,19 @@ const AuthProvider = ({ children }) => {
     })();
   }, []);
 
-  const login = (data) => {
+  const login = async (data) => {
     setUser(data.user);
     setLoggedIn(true);
 
     console.log("User logged in:", data);
     console.log(data.user._id);
-    localStorage.setItem("userId",data.user._id);
+    try {
+      const recommendations = await fetchRecommendations(data.user._id);
+      localStorage.setItem("recommendations", JSON.stringify(recommendations));
+    } catch (error) {
+      console.error("Error fetching recommendations:", error);
+    }
+    localStorage.setItem("userId", data.user._id);
     localStorage.setItem("access-token", data.accessToken);
     localStorage.setItem("refresh-token", data.refreshToken);
   };
