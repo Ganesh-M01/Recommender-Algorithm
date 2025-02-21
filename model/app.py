@@ -54,7 +54,7 @@ def content_based_recommendations(product_id, top_n=5):
 
 
 # Collaborative Filtering
-def collaborative_filtering(user_id, top_n=5):
+def collaborative_filtering(user_id, top_n=12):
     events_cursor = db.events.find({}, {"userId": 1, "productId": 1, "eventType": 1})
     events_data = pd.DataFrame(list(events_cursor))
 

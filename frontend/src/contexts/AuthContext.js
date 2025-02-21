@@ -53,7 +53,7 @@ const AuthProvider = ({ children }) => {
     await fetchLogout();
     localStorage.removeItem("access-token");
     localStorage.removeItem("refresh-token");
-
+    
     setUser(null);
     setLoggedIn(false);
 
